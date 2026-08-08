@@ -9,8 +9,10 @@ import { FormsModule } from '@angular/forms';
 })
 export class Home implements OnInit{
 
+  isDisabled = false;
+  
   user = {
-    name: '',
+    name: 'thushara',
     email: '',
     isRemember: false
   }
@@ -21,5 +23,11 @@ export class Home implements OnInit{
 
   submit() {
     console.log(this.user);
+  }
+
+  disable() { 
+    this.isDisabled = !this.isDisabled
+    console.log(this.isDisabled);
+    this.user.name = '';
   }
 }

@@ -1,4 +1,9 @@
 <p>home works!</p>
 
-  <input type="text" [(ngModel)]="user.name" class="border-cyan-900"/>
-  <button (click)="submit()">logged</button>
+<input type="text" [(ngModel)]="user.name" [class]="isDisabled ? 'border border-red-500' : 'border border-red-100'"/>
+<button (click)="submit()">logged</button>
+
+<div>
+  <button [class]="isDisabled ? 'bg-blue-500 hover:bg-blue-700' : 'bg-red-500 hover:bg-red-700' " class="border border-black btn text-white font-bold py-2 px-4 rounded" (click)="disable()">{{isDisabled ? 'Enable' : 'Disable' }}</button>
+</div>
+
