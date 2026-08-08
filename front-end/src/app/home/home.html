@@ -13,20 +13,71 @@
   <div>
     <label>First Name: </label>
     <input type="text" name="firstName" class="border border-black" formControlName="firstName"/>
+    @if (crudApplication.controls.firstName.touched && crudApplication.controls.firstName.errors?.['required']){
+    <div>
+      required
+    </div>
+    }
+    @if(crudApplication.controls.firstName.errors?.['minlength'] || crudApplication.controls.firstName.errors?.['maxlength']){
+    <div>
+      Character leangth dosent match
+    </div>
+    }
   </div>
+
   <div>
-  <label>Last Name: </label>
-    <input type="text" name="lastName" class="border border-black" formControlName="lastName"/>  
+    <label>Last Name: </label>
+    <input type="text" name="lastName" class="border border-black" formControlName="lastName"/>
+    @if(crudApplication.controls.lastName.touched && crudApplication.controls.lastName.errors?.['required']){
+    <div>
+      required
+    </div>
+    } 
+    <!--@if(crudApplication.controls.lastName.touched){
+    <div>
+      Character dosent match
+    </div>
+    }-->
   </div>
+
   <div>
     <label>Email: </label>
     <input type="email" name="email" class="border border-black" formControlName="email"/>
+    @if(crudApplication.controls.email.touched && crudApplication.controls.email.errors?.['required']){
+    <div>
+      required
+    </div>
+    }
+    <!--<div>
+      Character leangth dosent match
+    </div>-->
+    @if(crudApplication.controls.email.touched && (crudApplication.controls.email.errors?.['email'] || crudApplication.controls.email.errors?.['pattern'])){
+    <div>
+      must be an Email
+    </div>
+    }
   </div>
+  
   <div>
     <label>Age: </label>
     <input type="number" name="age" class="border border-black" formControlName="age"/>
+    @if(crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['required']){
+    <div>
+      required
+    </div>
+    }
+    @if(crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['min']){
+    <div>
+      too young
+    </div>
+    } @else if(crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['max']){
+    <div>
+      too old
+    </div>
+    }
   </div>
+  
   <div>
-  <button class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
+    <button class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
   </div>
 </form>

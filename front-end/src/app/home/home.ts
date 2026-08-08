@@ -29,19 +29,24 @@ export class Home implements OnInit{
         Validators.email,
         Validators.required,
         Validators.minLength(5),
+        Validators.pattern(/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/),
         Validators.maxLength(100)
       ]],
       age: ['', [
         Validators.required,
+        Validators.min(18),
+        Validators.max(99),
       ]]
     })
   }
 
-  onSubmitCrud() { 
-    console.log(this.crudApplication.value);
+  onSubmitCrud() {
+    // console.log(this.crudApplication.controls.email.hasError('email'));
+    console.log(this.crudApplication.controls.age.errors);
     if (this.crudApplication.invalid) {
       return;
     }
+    console.log(this.crudApplication.value);
   }
   
   user = {
