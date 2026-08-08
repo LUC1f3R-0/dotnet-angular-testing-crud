@@ -7,3 +7,26 @@
   <button [class]="isDisabled ? 'bg-blue-500 hover:bg-blue-700' : 'bg-red-500 hover:bg-red-700' " class="border border-black btn text-white font-bold py-2 px-4 rounded" (click)="disable()">{{isDisabled ? 'Enable' : 'Disable' }}</button>
 </div>
 
+<hr>
+  
+<form [formGroup]="crudApplication" (ngSubmit)="onSubmitCrud()">
+  <div>
+    <label>First Name: </label>
+    <input type="text" name="firstName" class="border border-black" formControlName="firstName"/>
+  </div>
+  <div>
+  <label>Last Name: </label>
+    <input type="text" name="lastName" class="border border-black" formControlName="lastName"/>  
+  </div>
+  <div>
+    <label>Email: </label>
+    <input type="email" name="email" class="border border-black" formControlName="email"/>
+  </div>
+  <div>
+    <label>Age: </label>
+    <input type="number" name="age" class="border border-black" formControlName="age"/>
+  </div>
+  <div>
+  <button class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
+  </div>
+</form>
