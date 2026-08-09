@@ -41,8 +41,6 @@ export class Home implements OnInit{
   }
 
   onSubmitCrud() {
-    // console.log(this.crudApplication.controls.email.hasError('email'));
-    console.log(this.crudApplication.controls.age.errors);
     if (this.crudApplication.invalid) {
       return;
     }
