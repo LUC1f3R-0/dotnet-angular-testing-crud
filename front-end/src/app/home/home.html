@@ -32,12 +32,12 @@
     <div>
       required
     </div>
-    } 
-    <!--@if(crudApplication.controls.lastName.touched){
+    }
+    @if(crudApplication.controls.lastName.touched && (crudApplication.controls.lastName.errors?.['maxlength'] || crudApplication.controls.lastName.errors?.['minlength'])){
     <div>
-      Character dosent match
+      Character leangth dosent match
     </div>
-    }-->
+    }
   </div>
 
   <div>
@@ -81,3 +81,33 @@
     <button class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
   </div>
 </form>
+<div>
+  <table>
+    <thead>
+      <tr class="user-row">
+        <th class="px-5">Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="user-row">
+        <td>#1</td>
+        <td>Nikesh</td>
+        <td>Thushan</td>
+        <td>Nikesh@gmail.com</td>
+        <td>34</td>
+        <td>
+          <button class="bg-red-500 py-1 px-3 rounded">Delete</button>
+          <button class="bg-green-400 py-1 px-3 rounded">Edit</button>
+          <button class="bg-blue-500 py-1 px-3 rounded">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

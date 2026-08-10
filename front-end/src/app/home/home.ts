@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
+interface CrudUser {
+  fName: string;
+  lName: string;
+  email: string;
+  age: number;
+};
+
 @Component({
   selector: 'app-home',
   imports: [FormsModule, ReactiveFormsModule],
@@ -9,8 +16,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 })
   
 export class Home implements OnInit{
-
-  isDisabled = false;
+  isDisabled = true;
 
   crudApplication;
   constructor(private fb: FormBuilder) {
@@ -41,11 +47,43 @@ export class Home implements OnInit{
   }
 
   onSubmitCrud() {
+    // console.log(this.crudApplication.get('firstName')?.disable());
     if (this.crudApplication.invalid) {
       return;
     }
+    else if (Number.isNaN(this.crudApplication.get('age')?.value)) {
+      return;
+    }
+    console.log(this.crudApplication.disable());
     console.log(this.crudApplication.value);
   }
+
+  // crudUsers: crudUser[] = [];  
+
+  // interface crudUser {
+  //   fName: string;
+  //   lName: string;
+  //   email: string;
+  //   age: number;
+  // }
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
   
   user = {
     name: 'thushara',
@@ -60,7 +98,6 @@ export class Home implements OnInit{
   submit() {
     console.log(this.user);
   }
-
   disable() { 
     this.isDisabled = !this.isDisabled
     console.log(this.isDisabled);

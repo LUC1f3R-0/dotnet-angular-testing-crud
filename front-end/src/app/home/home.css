@@ -1,0 +1,8 @@
+th {
+  text-align: center;
+  column-span: 5;
+}
+
+.user-row td, th {
+  padding: 0 10px;
+}
