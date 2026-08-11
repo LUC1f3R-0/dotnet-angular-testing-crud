@@ -20,7 +20,7 @@ export class Home implements OnInit{
 
   crudApplication;
   constructor(private fb: FormBuilder) {
-    this.crudApplication = this.fb.group({
+    this.crudApplication = this.fb.nonNullable.group({
       firstName: ['', [
         Validators.required,
         Validators.minLength(5),
@@ -46,33 +46,37 @@ export class Home implements OnInit{
     })
   }
 
+  crudUsers: CrudUser[] = [];
+  
   onSubmitCrud() {
-    // console.log(this.crudApplication.get('firstName')?.disable());
     if (this.crudApplication.invalid) {
       return;
     }
-    else if (Number.isNaN(this.crudApplication.get('age')?.value)) {
+  
+    const user: CrudUser = {
+      fName: this.crudApplication.controls.firstName.value,
+      lName: this.crudApplication.controls.lastName.value,
+      email: this.crudApplication.controls.email.value,
+      age: Number(this.crudApplication.controls.age.value),
+    };
+  
+    if (Number.isNaN(user.age)) {
       return;
     }
-    console.log(this.crudApplication.disable());
-    console.log(this.crudApplication.value);
+    this.crudUsers.unshift(user);
+  
+    console.log(this.crudUsers);
   }
 
-  // crudUsers: crudUser[] = [];  
-
-  // interface crudUser {
-  //   fName: string;
-  //   lName: string;
-  //   email: string;
-  //   age: number;
-  // }
-
-  
+  remove(value:CrudUser) {
+    console.log(value);
+    console.log();
+    this.crudUsers.splice(this.crudUsers.indexOf(value))
+  }
 
 
 
   
-
 
 
 

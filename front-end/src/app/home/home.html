@@ -96,18 +96,28 @@
       </tr>
     </thead>
     <tbody>
+        @for(user of crudUsers; track $index){
       <tr class="user-row">
-        <td>#1</td>
-        <td>Nikesh</td>
-        <td>Thushan</td>
-        <td>Nikesh@gmail.com</td>
-        <td>34</td>
+        <td>{{ $index+1 }}</td>
+        <td>{{ user.fName }}</td>
+        <td>{{ user.lName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.age }}</td>
         <td>
-          <button class="bg-red-500 py-1 px-3 rounded">Delete</button>
+          <button class="bg-red-500 py-1 px-3 rounded" (click)="remove(user)">Delete</button>
           <button class="bg-green-400 py-1 px-3 rounded">Edit</button>
           <button class="bg-blue-500 py-1 px-3 rounded">View</button>
         </td>
       </tr>
+        }        
     </tbody>
   </table>
+<ul>
+  @for (user of crudUsers; track $index){
+  <li>{{user.fName}}</li>
+} @empty{
+    <li>No users found.</li>
+}
+</ul>
+
 </div>
