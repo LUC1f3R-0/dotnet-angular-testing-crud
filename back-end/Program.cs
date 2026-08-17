@@ -1,10 +1,48 @@
+
 using backend.Configuration;
+using backend.Data;
+using backend.HostedService;
+using backend.Infastructure.Options;
+using Microsoft.Extensions.Options;
+using Npgsql;
+using Microsoft.EntityFrameworkCore;
+using TestCrudApplication.HostedServices;
+using TestCrudApplication.Infrastructure.Connectivity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddCorsConfiguration();
+
+builder.Services.Configure<DatabaseOptions>(
+    builder.Configuration.GetSection("Database")
+);
+
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+{
+    var databaseOptions = serviceProvider
+        .GetRequiredService<IOptions<DatabaseOptions>>()
+        .Value;
+
+    var connectionStringBuilder = new NpgsqlConnectionStringBuilder
+    {
+        Host = databaseOptions.Host,
+        Port = databaseOptions.Port,
+        Database = databaseOptions.Name,
+        Username = databaseOptions.UserNmae,
+        Password = databaseOptions.Password
+    };
+
+    options.UseNpgsql(connectionStringBuilder.ConnectionString);
+});
+
+builder.Services.AddScoped<
+    IDatabaseConnectivityChecker,
+    DatabaseConnectivityChecker
+>();
+
+builder.Services.AddHostedService<StartupConnectionCheckService>();
 
 var app = builder.Build();
 

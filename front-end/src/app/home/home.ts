@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HomeService } from '../services/home';
 
 interface CrudUser {
   fName: string;
@@ -16,6 +17,8 @@ interface CrudUser {
 })
   
 export class Home implements OnInit{
+  private homeService = inject(HomeService);
+  
   isDisabled = true;
 
   crudApplication;
@@ -53,26 +56,25 @@ export class Home implements OnInit{
       return;
     }
   
-    const user: CrudUser = {
-      fName: this.crudApplication.controls.firstName.value,
-      lName: this.crudApplication.controls.lastName.value,
-      email: this.crudApplication.controls.email.value,
-      age: Number(this.crudApplication.controls.age.value),
-    };
+    // const user: CrudUser = {
+    //   fName: this.crudApplication.controls.firstName.value,
+    //   lName: this.crudApplication.controls.lastName.value,
+    //   email: this.crudApplication.controls.email.value,
+    //   age: Number(this.crudApplication.controls.age.value),
+    // };
   
-    if (Number.isNaN(user.age)) {
+    if (Number.isNaN(this.crudApplication.controls.age.value)) {
       return;
     }
-    this.crudUsers.unshift(user);
+    // this.crudUsers.unshift(user);
   
-    console.log(this.crudUsers);
+    console.log(this.crudApplication.value);
   }
-
-  remove(value:CrudUser) {
-    console.log(value);
-    console.log();
-    this.crudUsers.splice(this.crudUsers.indexOf(value))
-  }
+  // remove(value:CrudUser) {
+  //   console.log(value);
+  //   console.log(this.crudUsers.indexOf(value));
+  //   this.crudUsers.splice(this.crudUsers.indexOf(value), 1)
+  // }
 
 
 
@@ -96,15 +98,22 @@ export class Home implements OnInit{
   }
   
   ngOnInit(): void {
-    console.log('hello world');
+    this.homeService.getPokemon().subscribe({
+      next: response => {
+        console.log(response);
+      },
+      error: error => {
+        console.error(error);
+      }
+    });
   }
 
-  submit() {
-    console.log(this.user);
-  }
-  disable() { 
-    this.isDisabled = !this.isDisabled
-    console.log(this.isDisabled);
-    this.user.name = '';
-  }
+  // submit() {
+  //   console.log(this.user);
+  // }
+  // disable() { 
+  //   this.isDisabled = !this.isDisabled
+  //   console.log(this.isDisabled);
+  //   this.user.name = '';
+  // }
 }

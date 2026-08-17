@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment.development';
 export class HomeService {
   private http = inject(HttpClient);
   
-  getPokemon(name: string) {
-      return this.http.get(`${environment.apiUrl}pokemon/${name}`);
+  getPokemon() {
+      return this.http.get(`http://localhost:5262/api/users`);
   }
 }
