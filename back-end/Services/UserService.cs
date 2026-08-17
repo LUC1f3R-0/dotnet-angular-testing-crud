@@ -22,10 +22,10 @@ public class UserService : IUserService
 
         var user = new User
         {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Email = dto.Email,
-            Age = dto.Age
+            firstName = dto.FirstName,
+            lastName = dto.LastName,
+            email = dto.Email,
+            age = dto.Age
         };
 
         var createUser = await _userRepository.CreateAsync(user);
@@ -37,11 +37,11 @@ public class UserService : IUserService
     {
         return new UserDto
         {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            Age = user.Age
+            Id = user.id,
+            FirstName = user.firstName,
+            LastName = user.lastName,
+            Email = user.email,
+            Age = user.age
         };
     }
 }

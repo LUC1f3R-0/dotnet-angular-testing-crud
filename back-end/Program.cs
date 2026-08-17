@@ -1,4 +1,3 @@
-
 using backend.Configuration;
 using backend.Data;
 using backend.HostedService;
@@ -8,10 +7,17 @@ using Npgsql;
 using Microsoft.EntityFrameworkCore;
 using TestCrudApplication.HostedServices;
 using TestCrudApplication.Infrastructure.Connectivity;
+using MyApp.Services;
+using MyApp.Interfaces;
+using MyApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddCorsConfiguration(builder.Configuration);
 

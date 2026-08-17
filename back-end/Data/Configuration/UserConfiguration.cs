@@ -8,27 +8,31 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
 
-        builder.HasKey(u => u.Id);
+        builder.HasKey(u => u.id);
 
-        builder.Property(u => u.Id)
+        builder.Property(u => u.id)
         .ValueGeneratedOnAdd();
 
-        builder.Property(u => u.FirstName)
+        builder.Property(u => u.uuid)
+        .HasDefaultValueSql("gen_random_uuid()")
+        .ValueGeneratedOnAdd();
+
+        builder.Property(u => u.firstName)
         .HasMaxLength(100)
         .IsRequired();
 
-        builder.Property(u => u.LastName)
+        builder.Property(u => u.lastName)
         .HasMaxLength(100)
         .IsRequired();
 
-        builder.Property(u => u.Email)
+        builder.Property(u => u.email)
         .HasMaxLength(255)
         .IsRequired();
 
-        builder.Property(u => u.Age)
+        builder.Property(u => u.age)
         .IsRequired();
 
-        builder.HasIndex(u => u.Email)
+        builder.HasIndex(u => u.email)
         .IsUnique();
     }
 }
