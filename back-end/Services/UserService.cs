@@ -12,7 +12,7 @@ public class UserService : IUserService
     {
         _userRepository = userRepository;
     }
-    
+
     public async Task<UserDto> CreateUserAsync(CreateUserDto dto)
     {
         if (dto.Age < 18)
@@ -29,14 +29,19 @@ public class UserService : IUserService
         };
 
         var createUser = await _userRepository.CreateAsync(user);
+        
+        return ToDo(createUser);
+    }
 
+    private static UserDto ToDo(User user)
+    {
         return new UserDto
         {
-            Id = createUser.Id,
-            FirstName = createUser.FirstName,
-            LastName = createUser.LastName,
-            Email = createUser.Email,
-            Age = createUser.Age
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Age = user.Age
         };
     }
 }
