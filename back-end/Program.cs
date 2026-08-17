@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddCorsConfiguration();
+builder.Services.AddCorsConfiguration(builder.Configuration);
 
 builder.Services.Configure<DatabaseOptions>(
     builder.Configuration.GetSection("Database")

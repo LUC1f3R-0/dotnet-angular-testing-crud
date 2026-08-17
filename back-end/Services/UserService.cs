@@ -1,5 +1,3 @@
-
-
 using backend.Models;
 using MyApp.DTOs;
 using MyApp.Interfaces;
@@ -14,7 +12,7 @@ public class UserService : IUserService
     {
         _userRepository = userRepository;
     }
-
+    
     public async Task<UserDto> CreateUserAsync(CreateUserDto dto)
     {
         if (dto.Age < 18)
