@@ -30,7 +30,7 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         Host = databaseOptions.Host,
         Port = databaseOptions.Port,
         Database = databaseOptions.Name,
-        Username = databaseOptions.UserNmae,
+        Username = databaseOptions.UserName,
         Password = databaseOptions.Password
     };
 
