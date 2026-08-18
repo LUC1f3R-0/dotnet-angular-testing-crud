@@ -2,7 +2,7 @@ namespace MyApp.DTOs;
 
 public class UserDto
 {
-    public long Id { get; set; }
+    public Guid UuId { get; set; }
 
     public string FirstName { get; set; } = null!;
 

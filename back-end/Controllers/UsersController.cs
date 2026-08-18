@@ -15,21 +15,43 @@ public class UsersController : ControllerBase
     {
         _userService = userService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetUsers()
-    {        
-        return Ok(new
+    {
+        var users = await _userService.GetAllUsersAsync();
+        var response = new ApiResponse<List<UserDto>>
         {
-            message = "hello worrrrrrrrrrrrrld"
-        });
+            Success = true,
+            Message = "Users retrieved successfully.",
+            Data = users
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
+    }
+
+    [HttpGet("{guid:guid}")]
+    public async Task<IActionResult> GetUserById( Guid guid)
+    {
+        var user = await _userService.GetUserByIdAsync(guid);
+        var response = new ApiResponse<UserDto>
+        {
+            Success = true,
+            Message = "User Recieved",
+            Data = user
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
     }
 
     [HttpPost]
     public async Task<IActionResult> PostUser([FromBody] CreateUserDto user)
     {
         var createdUser = await _userService.CreateUserAsync(user);
-
-        return Ok(createdUser);
+        var response = new ApiResponse<UserDto>
+        {
+            Success = true,
+            Message = "User created successfully.",
+            Data = createdUser
+        };
+        return StatusCode(StatusCodes.Status201Created, response); 
     }
 }
