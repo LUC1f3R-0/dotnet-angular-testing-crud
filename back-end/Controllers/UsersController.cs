@@ -30,9 +30,6 @@ public class UsersController : ControllerBase
     {
         var createdUser = await _userService.CreateUserAsync(user);
 
-        return Ok(new
-        {
-            user
-        });
+        return Ok(createdUser);
     }
 }

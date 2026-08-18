@@ -1,4 +1,6 @@
+using backend.Exceptions;
 using backend.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using MyApp.DTOs;
 using MyApp.Interfaces;
 
@@ -15,11 +17,11 @@ public class UserService : IUserService
 
     public async Task<UserDto> CreateUserAsync(CreateUserDto dto)
     {
-        if (dto.Age < 18)
+        var existingUser = await _userRepository.GetByEmailAsync(dto.Email);
+        if(existingUser is not null)
         {
-            throw new ArgumentException("User must be at least 18 years old.");
+            throw new ConflictException("A user with this email already exists.");
         }
-
         var user = new User
         {
             firstName = dto.FirstName,
@@ -27,9 +29,7 @@ public class UserService : IUserService
             email = dto.Email,
             age = dto.Age
         };
-
         var createUser = await _userRepository.CreateAsync(user);
-        
         return ToDo(createUser);
     }
 

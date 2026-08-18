@@ -10,6 +10,7 @@ using TestCrudApplication.Infrastructure.Connectivity;
 using MyApp.Services;
 using MyApp.Interfaces;
 using MyApp.Repositories;
+using backend.Api.ExceptionHandling;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddCorsConfiguration(builder.Configuration);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.Configure<DatabaseOptions>(
     builder.Configuration.GetSection("Database")
@@ -51,6 +55,8 @@ builder.Services.AddScoped<
 builder.Services.AddHostedService<StartupConnectionCheckService>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseCors("AngularClient");
 
