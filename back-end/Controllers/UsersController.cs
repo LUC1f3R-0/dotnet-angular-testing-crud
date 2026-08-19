@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{guid:guid}")]
-    public async Task<IActionResult> GetUserById( Guid guid)
+    public async Task<IActionResult> GetUser(Guid guid)
     {
         var user = await _userService.GetUserByIdAsync(guid);
         var response = new ApiResponse<UserDto>
@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostUser([FromBody] CreateUserDto user)
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDto user)
     {
         var createdUser = await _userService.CreateUserAsync(user);
         var response = new ApiResponse<UserDto>
@@ -52,6 +52,21 @@ public class UsersController : ControllerBase
             Message = "User created successfully.",
             Data = createdUser
         };
-        return StatusCode(StatusCodes.Status201Created, response); 
+        return StatusCode(StatusCodes.Status201Created, response);
+    }
+
+    [HttpDelete("{guid:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid guid)
+    {
+        Console.WriteLine("starting");
+        var user = await _userService.DeleteUserByIdAsync(guid);
+        var resonse = new ApiResponse<UserDto>
+        {
+            Success = true,
+            Message = "User Deleted Sucesspully",
+            Data = user
+        };
+        Console.WriteLine("Success");
+        return StatusCode(StatusCodes.Status200OK, resonse);
     }
 }

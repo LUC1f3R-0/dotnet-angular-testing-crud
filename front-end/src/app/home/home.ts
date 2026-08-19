@@ -1,13 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeService } from '../services/home';
+import { CrudUserGet } from '../model/crud-user';
 
-interface CrudUser {
-  fName: string;
-  lName: string;
-  email: string;
-  age: number;
-};
+// interface CrudUser {
+//   fName: string;
+//   lName: string;
+//   email: string;
+//   age: number;
+// };
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,8 @@ interface CrudUser {
 })
   
 export class Home implements OnInit{
+  users = signal<CrudUserGet[]>([]);
+  
   private homeService = inject(HomeService);
   
   isDisabled = true;
@@ -41,15 +44,15 @@ export class Home implements OnInit{
         Validators.pattern(/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/),
         Validators.maxLength(100)
       ]],
-      age: ['', [
+      age: [0, [
         Validators.required,
         Validators.min(18),
         Validators.max(99),
       ]]
     })
   }
-
-  crudUsers: CrudUser[] = [];
+  
+  // crudUsers: CrudUser[] = [];
   
   onSubmitCrud() {
     if (this.crudApplication.invalid) {
@@ -69,6 +72,24 @@ export class Home implements OnInit{
     // this.crudUsers.unshift(user);
   
     console.log(this.crudApplication.value);
+
+    this.homeService.postUser(this.crudApplication.getRawValue()).subscribe({
+      next: response => {
+        if (response.success) {
+          this.homeService.getUsers().subscribe({
+            next: response => {
+              this.users.set(response.data)
+            },
+            error: error => {
+              console.error('GET failed:', error);
+            }
+          });
+        }
+      },
+      error: error => {
+        console.error('POST failed:', error);
+      }
+    });
   }
   // remove(value:CrudUser) {
   //   console.log(value);
@@ -76,38 +97,44 @@ export class Home implements OnInit{
   //   this.crudUsers.splice(this.crudUsers.indexOf(value), 1)
   // }
 
-
-
   
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-  
-  user = {
-    name: 'thushara',
-    email: '',
-    isRemember: false
-  }
+  // user = {
+  //   name: 'thushara',
+  //   email: '',
+  //   isRemember: false
+  // }
   
   ngOnInit(): void {
-    this.homeService.getPokemon().subscribe({
+    this.homeService.getUsers().subscribe({
       next: response => {
-        console.log(response);
+        const { data, message, success } = response;
+        this.users.set(data);
+        console.log(data)
       },
       error: error => {
         console.error(error);
       }
     });
   }
-
+  
+  deleteUser(uuid: string) {
+    this.homeService.deleteUser(uuid).subscribe({
+      next: response => {
+        if(response)
+        this.homeService.getUsers().subscribe({
+          next: response => {
+            // this.users.set(response.data)
+          },
+          error: error => {
+            console.error('GET failed:', error);
+          }
+        });
+      },
+      error: error => {
+        console.error("error: ",error.error);
+      }
+    });
+  }
   // submit() {
   //   console.log(this.user);
   // }

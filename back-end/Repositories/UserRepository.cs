@@ -26,13 +26,36 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.email == email);
     }
 
-    public async Task<List<User>> GetAllUsers()
+    // Get All users
+    public async Task<List<User>> GetAllAsync()
     {
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetUserById(Guid guid)
+    // Get A User By Uuid
+    public async Task<User?> GetByUuidAsync(Guid uuid)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.uuid == guid);
+        return await _context.Users.FirstOrDefaultAsync(u => u.uuid == uuid);
+    }
+
+    // public void Remove(User user)
+    // {
+    //     _context.Users.Remove(user);
+    // }
+
+    // public async Task AddAsync(User user)
+    // {
+    //     await _context.Users.AddAsync(user);
+    // }
+
+    // public async Task RemoveAsync(User user)
+    // {
+    //     _context.Users.Remove(user);
+    //     await _context.SaveChangesAsync();
+    // }
+    public async Task RemoveAsync(User user)
+    {
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
     }
 }

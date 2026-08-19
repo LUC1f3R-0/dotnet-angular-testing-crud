@@ -1,6 +1,5 @@
 using backend.Exceptions;
 using backend.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using MyApp.DTOs;
 using MyApp.Interfaces;
 
@@ -35,17 +34,28 @@ public class UserService : IUserService
 
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
-        var users = await _userRepository.GetAllUsers();
+        var users = await _userRepository.GetAllAsync();
         return [.. users.Select(ToDo)];
     }
 
     public async Task<UserDto> GetUserByIdAsync(Guid guid)
     {
-        var user = await _userRepository.GetUserById(guid);
+        var user = await _userRepository.GetByUuidAsync(guid);
         if (user is null)
         {
             throw new NotFoundException("No User found");
         }
+        return ToDo(user);
+    }
+
+    public async Task<UserDto> DeleteUserByIdAsync(Guid guid)
+    {
+        var user = await _userRepository.GetByUuidAsync(guid);
+        if (user is null)
+        {
+            throw new NotFoundException("No User found");
+        }
+        await _userRepository.RemoveAsync(user);
         return ToDo(user);
     }
 

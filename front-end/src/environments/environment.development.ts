@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://pokeapi.co/api/v2/',
+  apiUrl: 'http://localhost:5262/api',
   apiTimeout: 10000
 };
