@@ -104,7 +104,12 @@
         <td>{{ user.email }}</td>
         <td>{{ user.age }}</td>
         <td>
-          <button class="bg-red-500 py-1 px-3 rounded" (click)="deleteUser(user.uuId)">Delete</button>
+          <p-button
+            label="Delete"
+            severity="danger"
+            [outlined]="true"
+            (click)="confirm2($event, user.uuId)"
+          />
           <button class="bg-green-400 py-1 px-3 rounded">Edit</button>
           <button class="bg-blue-500 py-1 px-3 rounded">View</button>
         </td>
@@ -121,13 +126,6 @@
     label="Save"
     [outlined]="true"
     (click)="confirm1($event)"
-  />
-  
-  <p-button
-    label="Delete"
-    severity="danger"
-    [outlined]="true"
-    (click)="confirm2($event)"
   />
 </div>
 <app-confirm-test #confirm />

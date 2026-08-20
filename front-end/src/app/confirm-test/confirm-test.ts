@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
-import { ButtonModule } from '@openng/optimus-ui/button';
 import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 import { ToastModule } from '@openng/optimus-ui/toast';
 
 @Component({
   selector: 'app-confirm-test',
-  imports: [ButtonModule, ConfirmDialogModule, ToastModule],
+  imports: [ConfirmDialogModule, ToastModule],
   templateUrl: './confirm-test.html',
-  styleUrl: './confirm-test.css',
+  styleUrl: './confirm-test.css'
 })
 export class ConfirmTest {
 
@@ -17,10 +16,8 @@ export class ConfirmTest {
     private messageService: MessageService
   ) {}
 
-  confirmDelete(
-    event: Event,
-    acceptCallback: () => void
-  ) {
+  confirmDelete(event: Event, acceptCallback: () => void) {
+    console.log("clicked the delete button");
     this.confirmationService.confirm({
       target: event.currentTarget as EventTarget,
 
@@ -29,7 +26,7 @@ export class ConfirmTest {
 
       accept: () => {
         acceptCallback();
-
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Deleted',
@@ -47,19 +44,16 @@ export class ConfirmTest {
     });
   }
 
-  confirmSave(
-    event: Event,
-    acceptCallback: () => void
-  ) {
+  confirmSave(event: Event, acceptCallback: () => void) {
     this.confirmationService.confirm({
       target: event.currentTarget as EventTarget,
-
+      
       message: 'Do you want to save the changes?',
       header: 'Save Confirmation',
-
+      
       accept: () => {
         acceptCallback();
-
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Saved',

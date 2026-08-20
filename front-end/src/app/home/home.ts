@@ -152,6 +152,7 @@ export class Home implements OnInit{
 
   
   confirm1(event: Event) {
+    console.log("clicked the save button");
       this.confirmationService.confirm({
         target: event.currentTarget as EventTarget,
         message: 'Do you want to save the changes?',
@@ -161,13 +162,47 @@ export class Home implements OnInit{
       });
     }
   
-  confirm2(event: Event) {
+    confirm2(event: Event, uuid: string) {
+    
       this.confirmationService.confirm({
         target: event.currentTarget as EventTarget,
+    
         message: 'Are you sure you want to delete?',
         header: 'Delete Confirmation',
-        accept: () => this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'User deleted successfully' }),
-        reject: () => this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'Delete cancelled' }),
+    
+        accept: () => {
+          this.homeService.deleteUser(uuid).subscribe({
+            next: response => {
+              if (response.success) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Deleted',
+                  detail: response.message
+                });
+                this.users.update(users =>
+                  users.filter(user => user.uuId !== uuid)
+                );
+              }
+            },
+            error: error => {
+              console.error('DELETE failed:', error);
+    
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Delete failed',
+                detail: error.error.message
+              });
+            }
+          });
+        },
+    
+        reject: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Cancelled',
+            detail: 'Delete cancelled'
+          });
+        }
       });
     }
 }
