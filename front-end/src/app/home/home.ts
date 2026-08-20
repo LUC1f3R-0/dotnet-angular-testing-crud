@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeService } from '../services/home';
 import { CrudUserGet } from '../model/crud-user';
+import { Dialog } from '../shared/components/dialog/dialog';
 
 // interface CrudUser {
 //   fName: string;
@@ -12,7 +13,7 @@ import { CrudUserGet } from '../model/crud-user';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, Dialog],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -118,29 +119,41 @@ export class Home implements OnInit{
   }
   
   deleteUser(uuid: string) {
-    this.homeService.deleteUser(uuid).subscribe({
-      next: response => {
-        if(response)
-        this.homeService.getUsers().subscribe({
-          next: response => {
-            // this.users.set(response.data)
-          },
-          error: error => {
-            console.error('GET failed:', error);
-          }
-        });
-      },
-      error: error => {
-        console.error("error: ",error.error);
-      }
-    });
+    // this.homeService.deleteUser(uuid).subscribe({
+    //   next: response => {
+    //     if(response)
+    //     this.homeService.getUsers().subscribe({
+    //       next: response => {
+    //         // this.users.set(response.data)
+    //       },
+    //       error: error => {
+    //         console.error('GET failed:', error);
+    //       }
+    //     });
+    //   },
+    //   error: error => {
+    //     const {success, message, data } = error.error;
+    //     console.log(message);
+    //   }
+    // });
   }
   // submit() {
   //   console.log(this.user);
   // }
-  // disable() { 
+  // disable() {
   //   this.isDisabled = !this.isDisabled
   //   console.log(this.isDisabled);
   //   this.user.name = '';
   // }
+
+  
+  showModal = false;
+
+  openModal(): void {
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
 }

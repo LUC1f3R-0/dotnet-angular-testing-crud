@@ -116,4 +116,15 @@
       }
     </tbody>
   </table>
+
+  <button
+    type="button"
+    (click)="openModal()">
+    Open Modal
+  </button>
+  
+  <app-dialog
+    [visible]="showModal"
+    (closed)="closeModal()">
+  </app-dialog>
 </div>
