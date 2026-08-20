@@ -117,14 +117,17 @@
     </tbody>
   </table>
 
-  <button
-    type="button"
-    (click)="openModal()">
-    Open Modal
-  </button>
+  <p-button
+    label="Save"
+    [outlined]="true"
+    (click)="confirm1($event)"
+  />
   
-  <app-dialog
-    [visible]="showModal"
-    (closed)="closeModal()">
-  </app-dialog>
+  <p-button
+    label="Delete"
+    severity="danger"
+    [outlined]="true"
+    (click)="confirm2($event)"
+  />
 </div>
+<app-confirm-test #confirm />

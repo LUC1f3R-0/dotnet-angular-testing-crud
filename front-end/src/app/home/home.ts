@@ -2,7 +2,9 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeService } from '../services/home';
 import { CrudUserGet } from '../model/crud-user';
-import { Dialog } from '../shared/components/dialog/dialog';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
+import { ButtonModule } from '@openng/optimus-ui/button';
+import { ConfirmTest } from '../confirm-test/confirm-test';
 
 // interface CrudUser {
 //   fName: string;
@@ -13,7 +15,7 @@ import { Dialog } from '../shared/components/dialog/dialog';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, ReactiveFormsModule, Dialog],
+  imports: [FormsModule, ReactiveFormsModule, ButtonModule, ConfirmTest],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -23,6 +25,8 @@ export class Home implements OnInit{
   
   private homeService = inject(HomeService);
   
+  private confirmationService = inject(ConfirmationService);
+    private messageService = inject(MessageService);
   isDisabled = true;
 
   crudApplication;
@@ -147,13 +151,23 @@ export class Home implements OnInit{
   // }
 
   
-  showModal = false;
-
-  openModal(): void {
-    this.showModal = true;
-  }
-
-  closeModal(): void {
-    this.showModal = false;
-  }
+  confirm1(event: Event) {
+      this.confirmationService.confirm({
+        target: event.currentTarget as EventTarget,
+        message: 'Do you want to save the changes?',
+        header: 'Save Confirmation',
+        accept: () => this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Changes saved successfully' }),
+        reject: () => this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'Save cancelled' }),
+      });
+    }
+  
+  confirm2(event: Event) {
+      this.confirmationService.confirm({
+        target: event.currentTarget as EventTarget,
+        message: 'Are you sure you want to delete?',
+        header: 'Delete Confirmation',
+        accept: () => this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'User deleted successfully' }),
+        reject: () => this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'Delete cancelled' }),
+      });
+    }
 }
