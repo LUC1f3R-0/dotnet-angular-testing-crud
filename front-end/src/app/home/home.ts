@@ -6,13 +6,6 @@ import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { ConfirmTest } from '../confirm-test/confirm-test';
 
-// interface CrudUser {
-//   fName: string;
-//   lName: string;
-//   email: string;
-//   age: number;
-// };
-
 @Component({
   selector: 'app-home',
   imports: [FormsModule, ReactiveFormsModule, ButtonModule, ConfirmTest],
@@ -56,59 +49,52 @@ export class Home implements OnInit{
       ]]
     })
   }
-  
-  // crudUsers: CrudUser[] = [];
-  
+
   onSubmitCrud() {
     if (this.crudApplication.invalid) {
+      this.crudApplication.markAllAsTouched();
       return;
     }
   
-    // const user: CrudUser = {
-    //   fName: this.crudApplication.controls.firstName.value,
-    //   lName: this.crudApplication.controls.lastName.value,
-    //   email: this.crudApplication.controls.email.value,
-    //   age: Number(this.crudApplication.controls.age.value),
-    // };
+    const user = this.crudApplication.getRawValue();
   
-    if (Number.isNaN(this.crudApplication.controls.age.value)) {
+    if (Number.isNaN(user.age)) {
       return;
     }
-    // this.crudUsers.unshift(user);
   
-    console.log(this.crudApplication.value);
-
-    this.homeService.postUser(this.crudApplication.getRawValue()).subscribe({
+    this.homeService.postUser(user).subscribe({
       next: response => {
         if (response.success) {
+  
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Saved',
+            detail: response.message
+          });
+  
           this.homeService.getUsers().subscribe({
             next: response => {
-              this.users.set(response.data)
+              this.users.set(response.data);
             },
             error: error => {
               console.error('GET failed:', error);
             }
           });
+  
+          this.crudApplication.reset();
         }
       },
+  
       error: error => {
-        console.error('POST failed:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Save failed',
+          detail: error.error?.message ?? 'Something went wrong'
+        });
       }
     });
   }
-  // remove(value:CrudUser) {
-  //   console.log(value);
-  //   console.log(this.crudUsers.indexOf(value));
-  //   this.crudUsers.splice(this.crudUsers.indexOf(value), 1)
-  // }
 
-  
-  // user = {
-  //   name: 'thushara',
-  //   email: '',
-  //   isRemember: false
-  // }
-  
   ngOnInit(): void {
     this.homeService.getUsers().subscribe({
       next: response => {
@@ -121,88 +107,67 @@ export class Home implements OnInit{
       }
     });
   }
-  
-  deleteUser(uuid: string) {
-    // this.homeService.deleteUser(uuid).subscribe({
-    //   next: response => {
-    //     if(response)
-    //     this.homeService.getUsers().subscribe({
-    //       next: response => {
-    //         // this.users.set(response.data)
-    //       },
-    //       error: error => {
-    //         console.error('GET failed:', error);
-    //       }
-    //     });
-    //   },
-    //   error: error => {
-    //     const {success, message, data } = error.error;
-    //     console.log(message);
-    //   }
-    // });
-  }
-  // submit() {
-  //   console.log(this.user);
-  // }
-  // disable() {
-  //   this.isDisabled = !this.isDisabled
-  //   console.log(this.isDisabled);
-  //   this.user.name = '';
-  // }
 
-  
   confirm1(event: Event) {
-    console.log("clicked the save button");
-      this.confirmationService.confirm({
-        target: event.currentTarget as EventTarget,
-        message: 'Do you want to save the changes?',
-        header: 'Save Confirmation',
-        accept: () => this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Changes saved successfully' }),
-        reject: () => this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'Save cancelled' }),
-      });
-    }
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+      
+      message: 'Do you want to save the changes?',
+      header: 'Save Confirmation',
   
-    confirm2(event: Event, uuid: string) {
-    
-      this.confirmationService.confirm({
-        target: event.currentTarget as EventTarget,
-    
-        message: 'Are you sure you want to delete?',
-        header: 'Delete Confirmation',
-    
-        accept: () => {
-          this.homeService.deleteUser(uuid).subscribe({
-            next: response => {
-              if (response.success) {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Deleted',
-                  detail: response.message
-                });
-                this.users.update(users =>
-                  users.filter(user => user.uuId !== uuid)
-                );
-              }
-            },
-            error: error => {
-              console.error('DELETE failed:', error);
-    
+      accept: () => {
+        this.onSubmitCrud();
+      },
+  
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'Save cancelled'
+        });
+      }
+    });
+  }
+  
+  confirm2(event: Event, uuid: string) {
+
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+
+      message: 'Are you sure you want to delete?',
+      header: 'Delete Confirmation',
+
+      accept: () => {
+        this.homeService.deleteUser(uuid).subscribe({
+          next: response => {
+            if (response.success) {
               this.messageService.add({
-                severity: 'error',
-                summary: 'Delete failed',
-                detail: error.error.message
+                severity: 'success',
+                summary: 'Deleted',
+                detail: response.message
               });
+              this.users.update(users =>
+                users.filter(user => user.uuId !== uuid)
+              );
             }
-          });
-        },
-    
-        reject: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Cancelled',
-            detail: 'Delete cancelled'
-          });
-        }
-      });
-    }
+          },
+          error: error => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Delete failed',
+              detail: error.error.message
+            });
+          }
+        });
+      },
+
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'Delete cancelled'
+        });
+      }
+    });
+  }
 }
