@@ -110,8 +110,16 @@
             [outlined]="true"
             (click)="confirm2($event, user.uuId)"
           />
-          <button class="bg-green-400 py-1 px-3 rounded">Edit</button>
-          <button class="bg-blue-500 py-1 px-3 rounded">View</button>
+          <p-button
+            label="Edit"
+            [outlined]="true"
+            (click)="editUser($event, user.uuId)"
+          />
+          <p-button
+            label="View"
+            [outlined]="true"
+            (click)="viewUser($event, user.uuId)"
+          />
         </td>
       </tr>
       }@empty{
@@ -121,11 +129,11 @@
       }
     </tbody>
   </table>
-
+<!--
   <p-button
     label="Save"
     [outlined]="true"
     (click)="confirm1($event)"
-  />
+  />-->
 </div>
 <app-confirm-test #confirm />

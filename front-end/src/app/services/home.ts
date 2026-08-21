@@ -12,6 +12,10 @@ export class HomeService {
     return this.http.get<ApiResponse<CrudUserGet[]>>(`${environment.apiUrl}/users`);
   }
 
+  getUser(uuId: string) {
+    return this.http.get<ApiResponse<CrudUserGet>>(`${environment.apiUrl}/users/${uuId}`);
+  }
+
   postUser(user: CrudUserPost) {
     return this.http.post<ApiResponse<CrudUserPost>>(`${environment.apiUrl}/users`, user);
   }

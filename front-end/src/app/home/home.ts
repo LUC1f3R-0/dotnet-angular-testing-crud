@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeService } from '../services/home';
 import { CrudUserGet } from '../model/crud-user';
@@ -21,6 +21,8 @@ export class Home implements OnInit{
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
 
+  @ViewChild('confirm') confirm!: ConfirmTest;
+  
   isDisabled = true;
 
   crudApplication;
@@ -170,5 +172,56 @@ export class Home implements OnInit{
         });
       }
     });
+  }
+
+  viewUser(event: Event, uuId: string) {
+    this.homeService.getUser(uuId).subscribe({
+      next: response => {
+        const { data, message, success } = response;
+        this.confirmationService.confirm({
+          target: event.currentTarget as EventTarget,
+          
+          header: 'User UUID',
+          message: `
+          <div class="flex flex-col gap-2">
+          <div><span class="font-semibold">First Name:</span> ${data.firstName}</div>
+          <div><span class="font-semibold">Last Name:</span> ${data.lastName}</div>
+          <div><span class="font-semibold">Email:</span> ${data.email}</div>
+          <div><span class="font-semibold">Age:</span> ${data.age}</div>
+          </div>
+          `,
+          acceptVisible: false,
+          rejectVisible: false
+        });
+      },
+      error: error => {
+        console.error(error);
+      }
+    })
+  }
+
+  editUser(event: Event, uuId: string) {
+    console.log(uuId);
+    this.homeService.getUser(uuId).subscribe({
+      next: response => {
+        const { data, message, success } = response;
+        this.confirmationService.confirm({
+          target: event.currentTarget as EventTarget,
+          
+          header: 'User UUID',
+          message: `
+          <div class="flex flex-col gap-2">
+          <div><span class="font-semibold">First Name:</span> <input value="${data.firstName}"/></div>
+          <div><span class="font-semibold">Last Name:</span> ${data.lastName}</div>
+          <div><span class="font-semibold">Email:</span> ${data.email}</div>
+          <div><span class="font-semibold">Age:</span> ${data.age}</div>
+          </div>
+          `,
+        });
+      },
+      error: error => {
+        console.error(error);
+      }
+    })
   }
 }
