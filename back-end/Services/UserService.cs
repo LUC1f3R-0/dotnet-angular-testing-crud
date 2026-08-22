@@ -19,29 +19,53 @@ public class UserService(IUserRepository _userRepository) : IUserService
             email = dto.Email,
             age = dto.Age
         };
-        var createUser = await _userRepository.CreateAsync(user);
-        return ToDo(createUser);
+
+        var createdUser = await _userRepository.CreateAsync(user);
+
+        return ToDto(createdUser);
     }
 
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
         var users = await _userRepository.GetAllAsync();
-        return [.. users.Select(ToDo)];
+
+        return [.. users.Select(ToDto)];
     }
 
     public async Task<UserDto> GetUserByIdAsync(Guid guid)
     {
-        var user = await _userRepository.GetByUuidAsync(guid) ?? throw new NotFoundException("No User found");
-        return ToDo(user);
+        var user = await _userRepository.GetByUuidAsync(guid)
+            ?? throw new NotFoundException("No User found");
+
+        return ToDto(user);
     }
 
     public async Task<UserDto> DeleteUserByIdAsync(Guid guid)
     {
-        var user = await _userRepository.GetByUuidAsync(guid) ?? throw new NotFoundException("No User found");
-        return ToDo(user);
+        var user = await _userRepository.GetByUuidAsync(guid)
+            ?? throw new NotFoundException("No User found");
+
+        await _userRepository.RemoveAsync(user);
+
+        return ToDto(user);
     }
 
-    private static UserDto ToDo(User user)
+    public async Task<UserDto> UpdateUserByIdAsync(Guid guid, CreateUserDto dto)
+    {
+        var existingUser = await _userRepository.GetByUuidAsync(guid)
+            ?? throw new NotFoundException("User not found.");
+
+        existingUser.firstName = dto.FirstName;
+        existingUser.lastName = dto.LastName;
+        existingUser.email = dto.Email;
+        existingUser.age = dto.Age;
+
+        await _userRepository.UpdateAsync(existingUser);
+
+        return ToDto(existingUser);
+    }
+
+    private static UserDto ToDto(User user)
     {
         return new UserDto
         {

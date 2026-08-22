@@ -15,130 +15,68 @@
       formControlName="firstName"
     />
 
-    @if (
-      crudApplication.controls.firstName.touched &&
-      crudApplication.controls.firstName.errors?.['required']
-    ) {
-      <div>required</div>
+    @if (crudApplication.controls.firstName.touched && crudApplication.controls.firstName.errors?.['required']) {
+      <div class="text-red-500">required</div>
     }
 
-    @if (
-      crudApplication.controls.firstName.touched &&
-      (
-        crudApplication.controls.firstName.errors?.['minlength'] ||
-        crudApplication.controls.firstName.errors?.['maxlength']
-      )
-    ) {
-      <div>Character length doesn't match</div>
+    @if (crudApplication.controls.firstName.touched && (crudApplication.controls.firstName.errors?.['minlength'] ||crudApplication.controls.firstName.errors?.['maxlength'])) {
+      <div class="text-red-500">Character length doesn't match</div>
     }
   </div>
 
 
   <div>
     <label>Last Name: </label>
-    <input
-      type="text"
-      name="lastName"
-      class="border border-black"
-      formControlName="lastName"
-    />
+    <input type="text" name="lastName" class="border border-black" formControlName="lastName" />
 
-    @if (
-      crudApplication.controls.lastName.touched &&
-      crudApplication.controls.lastName.errors?.['required']
-    ) {
-      <div>required</div>
+    @if (crudApplication.controls.lastName.touched && crudApplication.controls.lastName.errors?.['required']) {
+      <div class="text-red-500">required</div>
     }
 
-    @if (
-      crudApplication.controls.lastName.touched &&
-      (
-        crudApplication.controls.lastName.errors?.['minlength'] ||
-        crudApplication.controls.lastName.errors?.['maxlength']
-      )
-    ) {
-      <div>Character length doesn't match</div>
+    @if (crudApplication.controls.lastName.touched && (crudApplication.controls.lastName.errors?.['minlength'] ||crudApplication.controls.lastName.errors?.['maxlength'])) {
+      <div class="text-red-500">Character length doesn't match</div>
     }
   </div>
-
 
   <div>
     <label>Email: </label>
-    <input
-      type="email"
-      name="email"
-      class="border border-black"
-      formControlName="email"
-    />
+    <input type="email" name="email" class="border border-black" formControlName="email" />
 
-    @if (
-      crudApplication.controls.email.touched &&
-      crudApplication.controls.email.errors?.['required']
-    ) {
-      <div>required</div>
+    @if (crudApplication.controls.email.touched && crudApplication.controls.email.errors?.['required']) {
+      <div class="text-red-500">required</div>
     }
 
-    @if (
-      crudApplication.controls.email.touched &&
-      (
-        crudApplication.controls.email.errors?.['email'] ||
-        crudApplication.controls.email.errors?.['pattern']
-      )
-    ) {
-      <div>must be an Email</div>
+    @if (crudApplication.controls.email.touched && (crudApplication.controls.email.errors?.['email'] ||crudApplication.controls.email.errors?.['pattern'])) {
+      <div class="text-red-500">must be an Email</div>
     }
   </div>
-
-
+  
   <div>
     <label>Age: </label>
-    <input
-      type="number"
-      name="age"
-      class="border border-black"
-      formControlName="age"
-    />
+    <input type="number" name="age" class="border border-black" formControlName="age" />
 
-    @if (
-      crudApplication.controls.age.touched &&
-      crudApplication.controls.age.errors?.['required']
-    ) {
-      <div>required</div>
+    @if (crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['required']) {
+      <div class="text-red-500">required</div>
     }
 
-    @if (
-      crudApplication.controls.age.touched &&
-      crudApplication.controls.age.errors?.['min']
-    ) {
-      <div>too young</div>
+    @if (crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['min']) {
+      <div class="text-red-500">too young</div>
     }
-    @else if (
-      crudApplication.controls.age.touched &&
-      crudApplication.controls.age.errors?.['max']
-    ) {
+    @else if (crudApplication.controls.age.touched && crudApplication.controls.age.errors?.['max']) {
       <div>too old</div>
     }
   </div>
 
-
   <div>
-    <button
-      type="submit"
-      class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded"
-    >
-      Submit
-    </button>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
   </div>
-
 </form>
 
 
 <!-- USERS TABLE -->
 
 <div>
-
   <table>
-
     <thead>
       <tr class="user-row">
         <th class="px-5">Id</th>
@@ -151,221 +89,100 @@
     </thead>
 
     <tbody>
-
       @for (user of users(); track user.uuId) {
-
         <tr class="user-row">
-
           <td>{{ $index + 1 }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.age }}</td>
-
           <td>
-
-            <p-button
-              label="Delete"
-              severity="danger"
-              [outlined]="true"
-              (click)="confirm2($event, user.uuId)"
-            />
-
-            <p-button
-              label="Edit"
-              [outlined]="true"
-              (click)="editUser(user.uuId)"
-            />
-
-            <p-button
-              label="View"
-              [outlined]="true"
-              (click)="viewUser($event, user.uuId)"
-            />
-
+            <p-button label="Delete" severity="danger" [outlined]="true" (click)="confirm2($event, user.uuId)" />
+            <p-button label="Edit" [outlined]="true" (click)="editUser(user.uuId)" />
+            <p-button label="View" [outlined]="true" (click)="viewUser($event, user.uuId)"/>
           </td>
-
         </tr>
-
-      }
-
-      @empty {
-
+      }@empty {
         <tr>
           <td colspan="6">
             No users found.
           </td>
         </tr>
-
       }
-
     </tbody>
-
   </table>
-
 </div>
-
 
 <!-- EDIT USER DIALOG -->
 
 <app-confirm-test #dialog>
-
-  <form
-    [formGroup]="editForm"
-    class="flex flex-col gap-5"
-  >
+  <form [formGroup]="editForm" class="flex flex-col gap-5">
 
     <div class="flex flex-col gap-2">
 
-      <label for="editFirstName">
-        First Name
-      </label>
+      <label for="editFirstName"> First Name </label>
 
-      <input
-        pInputText
-        id="editFirstName"
-        formControlName="firstName"
-      />
+      <input pInputText id="editFirstName" formControlName="firstName" />
 
-      @if (
-        editForm.controls.firstName.touched &&
-        editForm.controls.firstName.errors?.['required']
-      ) {
-        <div>required</div>
+      @if (editForm.controls.firstName.touched && editForm.controls.firstName.errors?.['required']) {
+        <div class="text-red-500">required</div>
       }
-
-      @if (
-        editForm.controls.firstName.touched &&
-        (
-          editForm.controls.firstName.errors?.['minlength'] ||
-          editForm.controls.firstName.errors?.['maxlength']
-        )
-      ) {
-        <div>Character length doesn't match</div>
+      @if (editForm.controls.firstName.touched && (editForm.controls.firstName.errors?.['minlength'] ||editForm.controls.firstName.errors?.['maxlength'])) {
+        <div class="text-red-500">Character length doesn't match</div>
       }
 
     </div>
 
+    <div class="flex flex-col gap-2">
+
+      <label for="editLastName">Last Name</label>
+
+      <input pInputText id="editLastName" formControlName="lastName" />
+      @if (editForm.controls.lastName.touched && editForm.controls.lastName.errors?.['required']) {
+        <div class="text-red-500">required</div>
+      }
+      
+      @if (editForm.controls.lastName.touched && (editForm.controls.lastName.errors?.['minlength']||editForm.controls.lastName.errors?.['maxlength'])) {
+        <div class="text-red-500">Character length doesn't match</div>
+      }
+    </div>
 
     <div class="flex flex-col gap-2">
 
-      <label for="editLastName">
-        Last Name
-      </label>
+      <label for="editEmail">Email</label>
 
-      <input
-        pInputText
-        id="editLastName"
-        formControlName="lastName"
-      />
-
-      @if (
-        editForm.controls.lastName.touched &&
-        editForm.controls.lastName.errors?.['required']
-      ) {
-        <div>required</div>
+      <input pInputText id="editEmail" type="email" formControlName="email" />
+      @if (editForm.controls.email.touched && editForm.controls.email.errors?.['required']) {
+        <div class="text-red-500">required</div>
       }
 
-      @if (
-        editForm.controls.lastName.touched &&
-        (
-          editForm.controls.lastName.errors?.['minlength'] ||
-          editForm.controls.lastName.errors?.['maxlength']
-        )
-      ) {
-        <div>Character length doesn't match</div>
+      @if (editForm.controls.email.touched && (editForm.controls.email.errors?.['email'] ||editForm.controls.email.errors?.['pattern'])) {
+        <div class="text-red-500">must be an Email</div>
       }
-
     </div>
-
 
     <div class="flex flex-col gap-2">
-
-      <label for="editEmail">
-        Email
-      </label>
-
-      <input
-        pInputText
-        id="editEmail"
-        type="email"
-        formControlName="email"
-      />
-
-      @if (
-        editForm.controls.email.touched &&
-        editForm.controls.email.errors?.['required']
-      ) {
-        <div>required</div>
+      <label for="editAge">Age</label>
+      <input pInputText id="editAge" type="number" formControlName="age"/>
+      
+      @if (editForm.controls.age.touched && editForm.controls.age.errors?.['required']) {
+        <div class="text-red-500">required</div>
       }
 
-      @if (
-        editForm.controls.email.touched &&
-        (
-          editForm.controls.email.errors?.['email'] ||
-          editForm.controls.email.errors?.['pattern']
-        )
-      ) {
-        <div>must be an Email</div>
+      @if (editForm.controls.age.touched && editForm.controls.age.errors?.['min']) {
+        <div class="text-red-500">too young</div>
       }
-
+      @else if (editForm.controls.age.touched && editForm.controls.age.errors?.['max']) {
+        <div class="text-red-500">too old</div>
+      }
     </div>
-
-
-    <div class="flex flex-col gap-2">
-
-      <label for="editAge">
-        Age
-      </label>
-
-      <input
-        pInputText
-        id="editAge"
-        type="number"
-        formControlName="age"
-      />
-
-      @if (
-        editForm.controls.age.touched &&
-        editForm.controls.age.errors?.['required']
-      ) {
-        <div>required</div>
-      }
-
-      @if (
-        editForm.controls.age.touched &&
-        editForm.controls.age.errors?.['min']
-      ) {
-        <div>too young</div>
-      }
-      @else if (
-        editForm.controls.age.touched &&
-        editForm.controls.age.errors?.['max']
-      ) {
-        <div>too old</div>
-      }
-
-    </div>
-
   </form>
-
 
   <!-- DIALOG FOOTER -->
 
   <div dialog-footer>
-
-    <p-button
-      label="Cancel"
-      severity="secondary"
-      [outlined]="true"
-      (click)="dialog.closeDialog()"
-    />
-
-    <p-button
-      label="Save"
-      (click)="updateUser()"
-    />
-
+    <p-button label="Cancel" severity="secondary" [outlined]="true" (click)="dialog.closeDialog()" />
+    <p-button label="Save" (click)="updateUser()" />
   </div>
 
 </app-confirm-test>

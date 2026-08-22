@@ -22,6 +22,7 @@ export class HomeService {
   }
 
   updateUser(uuId: string, user: CrudUserPost) {
+    console.log("Running");
     return this.http.put<ApiResponse<CrudUserGet>>(`${environment.apiUrl}/users/${uuId}`, user);
   }
 

@@ -63,4 +63,18 @@ public class UsersController(IUserService _userService) : ControllerBase
         Console.WriteLine("Success");
         return StatusCode(StatusCodes.Status200OK, resonse);
     }
+
+    [HttpPut("{guid:guid}")]
+    public async Task<IActionResult> UpdateUser(Guid guid, CreateUserDto user)
+    {
+        var updatedUser = await _userService.UpdateUserByIdAsync(guid, user);
+    
+        var response = new ApiResponse<UserDto>
+        {
+            Success = true,
+            Message = "User updated successfully.",
+            Data = updatedUser
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
+    }
 }
