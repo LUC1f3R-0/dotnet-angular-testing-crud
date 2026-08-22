@@ -17,6 +17,8 @@ export class Home implements OnInit {
 
   users = signal<CrudUserGet[]>([]);
 
+  isSubmitting = signal(false);
+  
   private homeService = inject(HomeService);
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
@@ -109,7 +111,7 @@ export class Home implements OnInit {
     if (Number.isNaN(user.age)) {
       return;
     }
-
+    this.isSubmitting.set(true);
     this.homeService.postUser(user).subscribe({
       next: response => {
         if (response.success) {
@@ -128,6 +130,7 @@ export class Home implements OnInit {
             }
           });
           this.crudApplication.reset();
+          this.isSubmitting.set(false);
         }
       },
       

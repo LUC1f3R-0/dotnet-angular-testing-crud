@@ -19,7 +19,6 @@
     }
   </div>
 
-
   <div>
     <label>Last Name: </label>
     <input type="text" name="lastName" class="border border-black" formControlName="lastName" />
@@ -63,10 +62,9 @@
   </div>
 
   <div>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">Submit</button>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">{{ isSubmitting() ? 'Submitting. . . ':'Submit' }}</button>
   </div>
 </form>
-
 
 <!-- USERS TABLE -->
 
