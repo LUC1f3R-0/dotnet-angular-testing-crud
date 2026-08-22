@@ -18,3 +18,21 @@
     }
   }"
 />
+
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '35rem' }"
+>
+  <ng-template #header>
+    {{ header }}
+  </ng-template>
+
+  <ng-content></ng-content>
+
+  <ng-template #footer>
+    <ng-content select="[dialog-footer]"></ng-content>
+  </ng-template>
+</p-dialog>

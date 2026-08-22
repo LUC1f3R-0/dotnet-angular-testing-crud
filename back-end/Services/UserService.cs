@@ -9,7 +9,9 @@ public class UserService(IUserRepository _userRepository) : IUserService
 {
     public async Task<UserDto> CreateUserAsync(CreateUserDto dto)
     {
-        var existingUser = await _userRepository.GetByEmailAsync(dto.Email) ?? throw new ConflictException("A user with this email already exists.");
+        if (await _userRepository.GetByEmailAsync(dto.Email) is not null)
+            throw new ConflictException("A user with this email already exists.");
+
         var user = new User
         {
             firstName = dto.FirstName,

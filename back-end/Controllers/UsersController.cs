@@ -38,6 +38,7 @@ public class UsersController(IUserService _userService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto user)
     {
+        Console.WriteLine(user.FirstName);
         var createdUser = await _userService.CreateUserAsync(user);
         var response = new ApiResponse<UserDto>
         {
