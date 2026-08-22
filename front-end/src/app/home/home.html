@@ -8,12 +8,7 @@
 
   <div>
     <label>First Name: </label>
-    <input
-      type="text"
-      name="firstName"
-      class="border border-black"
-      formControlName="firstName"
-    />
+    <input type="text" name="firstName" class="border border-black" formControlName="firstName" />
 
     @if (crudApplication.controls.firstName.touched && crudApplication.controls.firstName.errors?.['required']) {
       <div class="text-red-500">required</div>
