@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-
-import {
-  CrudUserGet,
-  CrudUserPost
-} from '../model/crud-user';
-
+import { CrudUserGet, CrudUserPost } from '../model/crud-user';
 import { environment } from '../../environments/environment.development';
 import { ApiResponse } from '../model/api-response';
 
@@ -22,9 +17,7 @@ export class HomeService {
     return this.http.get<ApiResponse<CrudUserGet>>(`${environment.apiUrl}/users/${uuId}`);
   }
 
-
   postUser(user: CrudUserPost) {
-    console.log("this is from post request", user);
     return this.http.post<ApiResponse<CrudUserPost>>(`${environment.apiUrl}/users`, user);
   }
 
@@ -33,6 +26,6 @@ export class HomeService {
   }
 
   deleteUser(uuid: string) {
-    return this.http.delete<ApiResponse<CrudUserGet[]>>(`${environment.apiUrl}/users/${uuid}`);
+    return this.http.delete<ApiResponse<CrudUserGet>>(`${environment.apiUrl}/users/${uuid}`);
   }
 }
